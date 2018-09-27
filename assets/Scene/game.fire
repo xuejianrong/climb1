@@ -660,6 +660,7 @@
       "__id__": 8
     },
     "_enabled": true,
+    "isStart": true,
     "ctrlViewPrefab": {
       "__uuid__": "61d1116d-b971-42ee-b408-8ddbe9a95002"
     },
@@ -671,6 +672,13 @@
     },
     "stairs": [],
     "primaryHeight": 345,
+    "firstEndScaleX": 0.8,
+    "firstEndScaleY": 0.5,
+    "firstY": 200,
+    "firstEndY": 0,
+    "speed": 100,
+    "scaleXChange": 0.13,
+    "scaleYChange": 0.18,
     "_id": "b5qbhLQ9hLF7QqrHH9g4op"
   },
   {
