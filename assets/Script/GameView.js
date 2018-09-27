@@ -38,7 +38,7 @@ cc.Class({
     // cc.game.addPersistRootNode(this.node);
     // 添加stair
     this.createStair();
-    this.startGame();
+    // this.startGame();
   },
 
   update(dt) {
@@ -106,6 +106,7 @@ cc.Class({
     let i = 0;
     while (i < 5) {
       const newStair = cc.instantiate(this.stair);
+      newStair.getComponent('Stair').gameView = this;
       this.stairs[i] = newStair;
       this.node.addChild(newStair);
       if (i === 0) {

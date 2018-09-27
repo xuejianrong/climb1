@@ -14,6 +14,8 @@ cc.Class({
   startGame() {
     // 移除CtrlView
     this.node.runAction(cc.removeSelf());
+    // 触发gameView的gameStart方式
+    this.gameView.getComponent('GameView').startGame();
   },
 
   redirectToRank() {
