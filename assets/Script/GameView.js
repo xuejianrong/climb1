@@ -8,6 +8,10 @@ cc.Class({
     stair: cc.Prefab,
     stairs: [cc.Node],
     player: cc.Node,
+
+    /*
+    * stair和player运动参数
+    * */
     primaryHeight: 0, // scale为1时stair的高度（包含间距），第一个看不见
     firstEndScaleX: .8,
     firstEndScaleY: .5,
@@ -20,12 +24,21 @@ cc.Class({
     initY: -89.8,
     jumpHeight: 350,
     moveTime: 0, // player每次起跳之后的时间
+
+    /*
+    * 触摸参数
+    * */
+    isTouch: false,
+    prevTouchX: 0,
+    x: 0,
   },
 
   onLoad() {
     // 设置常驻节点
     // cc.game.addPersistRootNode(this.node);
+    // 添加stair
     this.createStair();
+    this.startGame();
   },
 
   update(dt) {
@@ -56,6 +69,11 @@ cc.Class({
       const v = a * t; // 初始速度（最大速度，正向）
       const vt = v - (a * this.moveTime); // 瞬时速度（向量）
       this.player.y += vt * dt;
+
+      // player触摸运动
+      if (this.isTouch && this.isStart) {
+        this.player.x = this.x;
+      }
     }
   },
 
@@ -72,7 +90,7 @@ cc.Class({
       last.y = this.firstY;
 
       // 调整player位置
-      this.initPlayer();
+      this.player.y = this.initY;
       // 清零运动时间
       this.moveTime = 0;
     }
@@ -107,7 +125,7 @@ cc.Class({
         if (i === 3) {
           this.initY = newStair.y;
         }
-        this.initPlayer();
+        this.player.y = this.initY;
       }
       i += 1;
     }
@@ -117,9 +135,34 @@ cc.Class({
     this.player.x = this.initX;
     this.player.y = this.initY;
     this.player.setSiblingIndex(10);
+    this.x = this.initX;
+  },
+
+  touchStartHandle(e) {
+    // 设置为触摸中
+    this.isTouch = true;
+    // 获取触摸初始点坐标
+    this.prevTouchX = e.getLocation().x;
+  },
+  touchMoveHandle(e) {
+    // 获取移动点坐标
+    const x = e.getLocation().x;
+    // 设置x坐标
+    this.x += x - this.prevTouchX;
+    // 更新前一个触摸点的x坐标
+    this.prevTouchX = x;
+  },
+  touchEndHandle(e) {
+    // 设置为触摸结束
+    this.isTouch = false;
   },
 
   startGame() {
-
+    this.isStart = true;
+    this.initPlayer();
+    // 监听touch事件
+    this.node.on('touchmove', this.touchMoveHandle, this);
+    this.node.on('touchstart', this.touchStartHandle, this);
+    this.node.on('touchend', this.touchEndHandle, this);
   }
 });

@@ -647,7 +647,7 @@
       "__id__": 8
     },
     "_enabled": true,
-    "isStart": true,
+    "isStart": false,
     "ctrlViewPrefab": {
       "__uuid__": "61d1116d-b971-42ee-b408-8ddbe9a95002"
     },
@@ -672,8 +672,10 @@
     "initX": 0,
     "initY": -89.8,
     "jumpHeight": 350,
-    "direction": 1,
     "moveTime": 0,
+    "isTouch": false,
+    "prevTouchX": 0,
+    "x": 0,
     "_id": "b5qbhLQ9hLF7QqrHH9g4op"
   },
   {
