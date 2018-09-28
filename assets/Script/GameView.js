@@ -4,6 +4,7 @@ cc.Class({
   properties: {
     isStart: false,
     gameCanvas: cc.Node,
+    ctrlViewPrefab: cc.Prefab,
     ctrlView: cc.Node,
     stair: cc.Prefab,
     stairs: [cc.Node],
@@ -24,7 +25,8 @@ cc.Class({
     scaleXChange: .13,
     scaleYChange: .18,
     initX: 0,
-    initY: 0, // 初始值为偏离stair的距离，这个值运行后会根据初始值计算成坐标
+    initYDistance: 0,  // 偏离stair的距离
+    initY: 0,
     jumpHeight: 350,
     moveTime: 0, // player每次起跳之后的时间
 
@@ -51,6 +53,7 @@ cc.Class({
   onLoad() {
     // 设置常驻节点
     // cc.game.addPersistRootNode(this.node);
+    this.createCtrlView();
     // 添加stair
     this.createStair();
     this.initPlayer();
@@ -122,6 +125,14 @@ cc.Class({
     }
   },
 
+  createCtrlView() {
+    if (!this.ctrlView) {
+      this.ctrlView = cc.instantiate(this.ctrlViewPrefab);
+      this.ctrlView.getComponent('CtrlView').gameView = this;
+    }
+    this.gameCanvas.addChild(this.ctrlView);
+  },
+
   createStair() {
     let i = 0;
     while (i < 5) {
@@ -146,7 +157,7 @@ cc.Class({
           this.firstEndY = newStair.y;
         }
         if (i === 3) {
-          this.initY += newStair.y;
+          this.initY = newStair.y + this.initYDistance;
         }
         this.player.y = this.initY;
       }
@@ -193,8 +204,9 @@ cc.Class({
     // 结束后的控制模块显示
     const view = cc.instantiate(this.overViewPrefab);
     const overCtrl = view.getComponent('OverCtrl');
-    overCtrl.gameView = this.node;
+    overCtrl.gameView = this;
     this.scheduleOnce(() => {
+      overCtrl.setting();
       this.gameCanvas.addChild(view);
     }, 1.5);
   },
@@ -223,5 +235,26 @@ cc.Class({
     const minHeight = 25;
     const height = (this.step / 100) * maxHeight;
     this.progress.height = height > 25 ? height : 25;
+  },
+
+  // 重置游戏场景
+  clearGame() {
+    this.stairs.forEach(stair => stair.removeFromParent())
+    this.stairs.length = 0;
+    this.createStair();
+    this.initPlayer();
+    this.progress.height = 25;
+    this.goldContinuousCount = 0;
+    this.score = 0;
+    this.addCount = 0;
+    this.step = 0;
+    this.preStep = 0;
+    this.scoreLabel.string = `<color=#19C1A7><b>${this.score}</b><color>`;
+
+    this.moveTime = 0;
+
+    const playerCom = this.player.getComponent('Player');
+    playerCom.activeNode.runAction(cc.show());
+    playerCom.overNode.runAction(cc.hide());
   },
 });

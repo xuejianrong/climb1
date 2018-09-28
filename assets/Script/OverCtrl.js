@@ -1,41 +1,22 @@
-// Learn cc.Class:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
-
 cc.Class({
-    extends: cc.Component,
+  extends: cc.Component,
 
-    properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
-    },
+  properties: {
+    score: cc.RichText,
+    desc: cc.Label,
+  },
 
-    // LIFE-CYCLE CALLBACKS:
+  onLoad () {
+  },
 
-    // onLoad () {},
+  setting() {
+    this.score.string = `本次得分<br/>${this.gameView.score}`;
+    this.desc.string = `每天5次复活机会，今日剩余：2次`; // TODO 根据服务器返回的数据显示
+  },
 
-    start () {
-
-    },
-
-    // update (dt) {},
+  skip() {
+    this.node.runAction(cc.removeSelf());
+    this.gameView.createCtrlView();
+    this.gameView.clearGame();
+  },
 });
