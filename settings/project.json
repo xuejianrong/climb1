@@ -8,7 +8,24 @@
   },
   "collision-matrix": [
     [
+      false
+    ],
+    [
+      false,
+      false,
+      true,
       true
+    ],
+    [
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1334,
@@ -17,7 +34,10 @@
   "fit-height": true,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "player",
+    "gold",
+    "tree"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {
@@ -25,6 +45,5 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

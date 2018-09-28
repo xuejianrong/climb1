@@ -38,6 +38,7 @@ cc.Class({
     // cc.game.addPersistRootNode(this.node);
     // 添加stair
     this.createStair();
+    this.initPlayer();
     // this.startGame();
   },
 
@@ -83,6 +84,9 @@ cc.Class({
       // this.isStart = false; // 用于调试
       // 把stairs中最后一个放到第一个
       const last = this.stairs.pop();
+      // 重排stair
+      const component = last.getComponent('Stair');
+      component.init();
       this.stairs.unshift(last);
       // 重置y坐标和缩放比例
       last.scaleX = 0;
@@ -106,7 +110,9 @@ cc.Class({
     let i = 0;
     while (i < 5) {
       const newStair = cc.instantiate(this.stair);
-      newStair.getComponent('Stair').gameView = this;
+      const stairComponent = newStair.getComponent('Stair');
+      stairComponent.gameView = this.node;
+      if (i > 1) stairComponent.noBarrier = true;
       this.stairs[i] = newStair;
       this.node.addChild(newStair);
       if (i === 0) {
@@ -160,10 +166,13 @@ cc.Class({
 
   startGame() {
     this.isStart = true;
-    this.initPlayer();
     // 监听touch事件
     this.node.on('touchmove', this.touchMoveHandle, this);
     this.node.on('touchstart', this.touchStartHandle, this);
     this.node.on('touchend', this.touchEndHandle, this);
-  }
+  },
+  gameOver() {
+    this.isStart = false;
+  },
+  getGold() {}
 });

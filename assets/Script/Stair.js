@@ -21,13 +21,17 @@ cc.Class({
 
   onLoad() {
     if (!this.noBarrier) {
-      // 随机位置
-      this.randomPosition();
-      // 根据随机位置添加障碍物
-      this.createBarrier();
-      // 根据随机位置添加金币
-      this.createGold();
+      this.init();
     }
+  },
+
+  init() {
+    // 随机位置
+    this.randomPosition();
+    // 根据随机位置添加障碍物
+    this.createBarrier();
+    // 根据随机位置添加金币
+    this.createGold();
   },
 
   // 随机出现障碍、金币位置
@@ -67,6 +71,9 @@ cc.Class({
     // 不存在才添加，为了减少节点的添加过程
     if (!this.gold) {
       this.gold = cc.instantiate(this.goldPrefab);
+    }
+    // 没有父节点（没有add或者remove掉）的才添加
+    if (!this.gold._parent) {
       this.node.addChild(this.gold);
     }
     this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, 110));
