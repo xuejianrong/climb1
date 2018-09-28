@@ -21,7 +21,7 @@ cc.Class({
     scaleXChange: .13,
     scaleYChange: .18,
     initX: 0,
-    initY: -89.8,
+    initY: 0, // 初始值为偏离stair的距离，这个值运行后会根据初始值计算成坐标
     jumpHeight: 350,
     moveTime: 0, // player每次起跳之后的时间
 
@@ -124,7 +124,7 @@ cc.Class({
           this.firstEndY = newStair.y;
         }
         if (i === 3) {
-          this.initY = newStair.y;
+          this.initY += newStair.y;
         }
         this.player.y = this.initY;
       }

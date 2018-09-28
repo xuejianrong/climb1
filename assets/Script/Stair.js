@@ -59,7 +59,7 @@ cc.Class({
     }
     // 设置位置
     this.barriers.forEach((barrier, i) => {
-      barrier.setPosition(cc.v2((this.barrierPositions[i] * 70) - 350 + 35, 130));
+      barrier.setPosition(cc.v2((this.barrierPositions[i] * 70) - 350 + 35, 110));
     });
   },
 
@@ -69,7 +69,7 @@ cc.Class({
       this.gold = cc.instantiate(this.goldPrefab);
       this.node.addChild(this.gold);
     }
-    this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, 130));
+    this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, 110));
   },
 
   // update (dt) {},
