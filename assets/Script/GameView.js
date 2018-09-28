@@ -3,16 +3,19 @@ cc.Class({
 
   properties: {
     isStart: false,
-    ctrlViewPrefab: cc.Prefab,
+    gameCanvas: cc.Node,
     ctrlView: cc.Node,
     stair: cc.Prefab,
     stairs: [cc.Node],
     player: cc.Node,
+    progressBox: cc.Node,
+    progress: cc.Node,
+    overViewPrefab: cc.Prefab,
 
     /*
     * stair和player运动参数
     * */
-    primaryHeight: 0, // scale为1时stair的高度（包含间距），第一个看不见
+    primaryHeight: 2, // scale为1时stair的高度（包含间距），第一个看不见
     firstEndScaleX: .8,
     firstEndScaleY: .5,
     firstY: 200,
@@ -31,6 +34,18 @@ cc.Class({
     isTouch: false,
     prevTouchX: 0,
     x: 0,
+
+    /*
+    * 分数相关
+    * */
+    goldContinuousCount: 0, // 连续获得金币次数
+    score: 0, // 当前分数
+    addCount: 0, // 获得金币时，增加的分数值
+    scoreLabel: cc.RichText,
+    // 当前第几个阶梯（只算有萝卜的）
+    step: 0,
+    // 上一个吃金币的阶梯值
+    preStep: 0,
   },
 
   onLoad() {
@@ -39,7 +54,6 @@ cc.Class({
     // 添加stair
     this.createStair();
     this.initPlayer();
-    // this.startGame();
   },
 
   update(dt) {
@@ -81,6 +95,8 @@ cc.Class({
   lateUpdate() {
     // stair到了临界位置
     if (this.stairs[0].y <= this.firstEndY) {
+      // 处理step
+      this.addStep();
       // this.isStart = false; // 用于调试
       // 把stairs中最后一个放到第一个
       const last = this.stairs.pop();
@@ -142,6 +158,7 @@ cc.Class({
     this.player.x = this.initX;
     this.player.y = this.initY;
     this.player.setSiblingIndex(10);
+    this.progressBox.setSiblingIndex(10);
     this.x = this.initX;
   },
 
@@ -173,6 +190,38 @@ cc.Class({
   },
   gameOver() {
     this.isStart = false;
+    // 结束后的控制模块显示
+    const view = cc.instantiate(this.overViewPrefab);
+    const overCtrl = view.getComponent('OverCtrl');
+    overCtrl.gameView = this.node;
+    this.scheduleOnce(() => {
+      this.gameCanvas.addChild(view);
+    }, 1.5);
   },
-  getGold() {}
+  getGold() {
+    if (this.step === this.preStep + 1) {
+      // 连续  则连续吃金币数+1
+      this.goldContinuousCount += 1;
+    } else {
+      // 不连续  则重置连续吃金币数
+      this.goldContinuousCount = 1;
+    }
+    this.preStep = this.step;
+
+    if (this.goldContinuousCount > 4) {
+      this.addCount = 50;
+    } else {
+      this.addCount = 20 + (this.goldContinuousCount - 1) * 10;
+    }
+    this.score += this.addCount;
+    this.scoreLabel.string = `<color=#19C1A7><b>${this.score}</b><color>`;
+  },
+  addStep() {
+    this.step += 1;
+    // 计算progress的高度
+    const maxHeight = 430;
+    const minHeight = 25;
+    const height = (this.step / 100) * maxHeight;
+    this.progress.height = height > 25 ? height : 25;
+  },
 });
