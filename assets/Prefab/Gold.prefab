@@ -39,8 +39,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 59,
-      "height": 85
+      "width": 64,
+      "height": 64
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -100,7 +100,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "9fKfi8uRlAXpNviUo0vkXh"
+    "_id": "27D65kcFRGdZmQ82SOfKex"
   },
   {
     "__type__": "cc.BoxCollider",
@@ -118,10 +118,10 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 85
+      "width": 65,
+      "height": 65
     },
-    "_id": "abrBO9EPBD/5RWy2rUy/Li"
+    "_id": "baGop/BXVL86Mg+JX2hHU5"
   },
   {
     "__type__": "cc.PrefabInfo",

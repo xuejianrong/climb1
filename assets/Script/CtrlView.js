@@ -7,7 +7,7 @@ cc.Class({
   },
 
   onLoad () {
-    // cc.director.preloadScene('rank', null);
+    Global.ctrlView = this;
   },
 
   startGame() {

@@ -21,7 +21,7 @@ cc.Class({
 
   onCollisionEnter(collider) {
     const gameView = this.gameView.getComponent('GameView');
-    if (this.node.y >= gameView.initY && this.node.y <= (gameView.initY + 120) && gameView.isStart) {
+    if (this.node.y >= gameView.initY && this.node.y <= (gameView.initY + 100) && gameView.isStart) {
       if (collider.node.name === 'Tree') {
         // 碰撞的是障碍
         console.log('game over');

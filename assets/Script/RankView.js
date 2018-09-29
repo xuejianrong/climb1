@@ -38,11 +38,21 @@ cc.Class({
     cc.director.loadScene('game');
   },
 
+  directToGameView() {
+    cc.director.loadScene('game');
+  },
+
   share() {
     cc.log('onShare');
     wx.shareAppMessage({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
     });
-  }
+  },
+
+  startGame() {
+    cc.director.loadScene('game', _ => {
+      Global.ctrlView.startGame();
+    });
+  },
 });

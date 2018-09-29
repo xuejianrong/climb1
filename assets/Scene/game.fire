@@ -581,8 +581,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 0.82,
+      "y": 0.82,
       "z": 1
     },
     "_rotationX": 0,
@@ -945,7 +945,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "groupIndex": 0,
-    "_id": "18R0TLy9tJ8KitC2d1v8BP"
+    "_id": "0bW+wPKFhJnbY9q0XgAF36"
   },
   {
     "__type__": "cc.Label",
@@ -970,7 +970,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_id": "07BSAHUXhO3KfiqD91ofRr"
+    "_id": "89Xxs9T5xCaoeCdZd9O1TX"
   },
   {
     "__type__": "cc.RichText",
@@ -1556,22 +1556,23 @@
     "overViewPrefab": {
       "__uuid__": "fa511276-05d7-420f-84a4-d24dcadef54d"
     },
-    "primaryHeight": 345,
-    "firstEndScaleX": 0.8,
-    "firstEndScaleY": 0.5,
+    "primaryHeight": 253,
+    "firstEndScaleX": 0.72,
+    "firstEndScaleY": 0.72,
     "firstY": 200,
     "firstEndY": 0,
     "speed": 100,
-    "scaleXChange": 0.13,
-    "scaleYChange": 0.18,
+    "scaleXChange": 0.09,
+    "scaleYChange": 0.09,
     "initX": 0,
-    "initYDistance": 45,
+    "initYDistance": 30,
     "initY": 0,
     "jumpHeight": 350,
     "moveTime": 0,
     "isTouch": false,
     "prevTouchX": 0,
     "x": 0,
+    "canTouchStart": false,
     "goldContinuousCount": 0,
     "score": 0,
     "addCount": 0,

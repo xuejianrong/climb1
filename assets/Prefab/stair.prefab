@@ -39,8 +39,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 832,
-      "height": 335
+      "width": 824,
+      "height": 243
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -100,7 +100,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "degW46KHJGsIv6ejHVVE9Q"
+    "_id": "cbbP81UD1JRqQlM6kwX2mu"
   },
   {
     "__type__": "b408awkSpRBPri4LoPCjvhR",
@@ -121,8 +121,9 @@
     "goldPrefab": {
       "__uuid__": "7226c6a9-adcb-44f8-8835-dfe4b1872d5c"
     },
+    "gold": null,
     "goldPosition": -2,
-    "_id": "1bGtUmQfJILJbwRbPVeWk7"
+    "_id": "f5eFLDdGdMApAuW1MeDmcs"
   },
   {
     "__type__": "cc.PrefabInfo",

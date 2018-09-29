@@ -17,6 +17,7 @@ cc.Class({
     gold: cc.Node,
     goldPosition: -2,
     // player: cc.Node,
+    distance: 75,
   },
 
   onLoad() {
@@ -63,7 +64,7 @@ cc.Class({
     }
     // 设置位置
     this.barriers.forEach((barrier, i) => {
-      barrier.setPosition(cc.v2((this.barrierPositions[i] * 70) - 350 + 35, 110));
+      barrier.setPosition(cc.v2((this.barrierPositions[i] * 70) - 350 + 35, this.distance));
     });
   },
 
@@ -76,7 +77,7 @@ cc.Class({
     if (!this.gold._parent) {
       this.node.addChild(this.gold);
     }
-    this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, 110));
+    this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, this.distance));
   },
 
   // update (dt) {},

@@ -18,14 +18,14 @@ cc.Class({
     /*
     * stair和player运动参数
     * */
-    primaryHeight: 2, // scale为1时stair的高度（包含间距），第一个看不见
-    firstEndScaleX: .8,
-    firstEndScaleY: .5,
+    primaryHeight: 263, // scale为1时stair的高度（包含间距），第一个看不见
+    firstEndScaleX: .72,
+    firstEndScaleY: .72,
     firstY: 200,
-    firstEndY: 0, // 113.75  ,  firstY = speed * .6 + firstEndY, .6为跳跃一次所需的时间（初始）
+    firstEndY: 0, // firstY = speed * .6 + firstEndY, .6为跳跃一次所需的时间（初始）
     speed: 143.75, // stair的运动速度 px/s ，作为游戏整体速度（难度的控制）
-    scaleXChange: .13,
-    scaleYChange: .18,
+    scaleXChange: .09,
+    scaleYChange: .09,
     initX: 0,
     initYDistance: 0,  // 偏离stair的距离
     initY: 0,
@@ -60,6 +60,8 @@ cc.Class({
     // 添加stair
     this.createStair();
     this.initPlayer();
+
+    Global.gameView = this;
 
     if (CC_WECHATGAME) {
       wx.onShareAppMessage(function () {
