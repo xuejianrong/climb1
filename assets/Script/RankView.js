@@ -43,10 +43,11 @@ cc.Class({
   },
 
   share() {
-    cc.log('onShare');
+    console.log('onShare');
     wx.shareAppMessage({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
+      query: 'view=rank&status=2',
     });
   },
 

@@ -51,9 +51,15 @@ cc.Class({
     step: 0,
     // 上一个吃金币的阶梯值
     preStep: 0,
+    maxStep: 100,
   },
 
   onLoad() {
+    // 首次进入首页判断是不是要跳转到rankView
+    if (Global.joinFirst) {
+      Global.joinFirst = false;
+      this.checkQuery();
+    }
     // 设置常驻节点
     // cc.game.addPersistRootNode(this.node);
     this.createCtrlView();
@@ -131,6 +137,11 @@ cc.Class({
       last.scaleX = 0;
       last.scaleY = 0;
       last.y = this.firstY;
+
+      // 多余的几个台阶隐藏
+      if (this.step > this.maxStep - 2) last.runAction(cc.hide());
+      // 台阶到达100，结束游戏
+      if (this.step > this.maxStep) this.gameOver(true);
 
       // 调整player位置
       this.player.y = this.initY;
@@ -245,10 +256,10 @@ cc.Class({
       }
     }
   },
-  gameOver() {
+  gameOver(complete) {
     this.isStart = false;
 
-    if (!Global.hasReplay) {
+    if (!Global.hasReplay && !complete) {
       // 没有复活过，结束后的控制模块显示
       const view = cc.instantiate(this.overViewPrefab);
       const overCtrl = view.getComponent('OverCtrl');
@@ -319,5 +330,15 @@ cc.Class({
   },
 
   // 上报成绩
-  updateData() {}
+  updateData() {},
+
+  checkQuery() {
+    if (CC_WECHATGAME) {
+      const query = wx.getLaunchOptionsSync().query;
+      if (query.view === 'rank') {
+        Global.rankViewStatus = parseInt(query.status, 10);
+        cc.director.loadScene('rank');
+      }
+    }
+  },
 });

@@ -69,4 +69,9 @@ module.exports = {
     })
   },
   hasReplay: false,
+
+  /*
+  * 其他
+  * */
+  joinFirst: true,
 };

@@ -29,6 +29,7 @@ cc.Class({
     wx.shareAppMessage({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
+      query: 'view=rank&status=2',
     });
 
     // 大于零而且没有复活过才能复活
