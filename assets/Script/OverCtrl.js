@@ -1,3 +1,5 @@
+const Global = require('../Global/Global');
+
 cc.Class({
   extends: cc.Component,
 
@@ -15,8 +17,18 @@ cc.Class({
   },
 
   skip() {
-    this.node.runAction(cc.removeSelf());
-    this.gameView.createCtrlView();
-    this.gameView.clearGame();
+    // this.node.runAction(cc.removeSelf());
+    // this.gameView.createCtrlView();
+    // this.gameView.clearGame();
+    Global.rankViewStatus = 1;
+    cc.director.loadScene('rank');
   },
+
+  share() {
+    cc.log('onShare');
+    wx.shareAppMessage({
+      title: Global.shareTitle,
+      imageUrl: Global.shareImageUrl,
+    });
+  }
 });

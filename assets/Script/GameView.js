@@ -1,3 +1,5 @@
+const Global = require('../Global/Global');
+
 cc.Class({
   extends: cc.Component,
 
@@ -57,6 +59,20 @@ cc.Class({
     // 添加stair
     this.createStair();
     this.initPlayer();
+
+    if (CC_WECHATGAME) {
+      wx.onShareAppMessage(function () {
+        return {
+          title: Global.shareTitle,
+          imageUrl: Global.shareImageUrl
+        }
+      });
+      if (!wx.cloud) {
+        console.error('请使用 2.2.3 或以上的基础库以使用云能力');
+      } else {
+        wx.cloud.init();
+      }
+    }
   },
 
   update(dt) {
@@ -198,6 +214,20 @@ cc.Class({
     this.node.on('touchmove', this.touchMoveHandle, this);
     this.node.on('touchstart', this.touchStartHandle, this);
     this.node.on('touchend', this.touchEndHandle, this);
+
+    if (CC_WECHATGAME) {
+      // 调用云函数
+      wx.cloud.callFunction({
+        name: 'login',
+        data: {},
+        success: res => {
+          console.log('[云函数] [login] user openid: ', res.result.openid);
+        },
+        fail: err => {
+          console.error('[云函数] [login] 调用失败', err);
+        }
+      });
+    }
   },
   gameOver() {
     this.isStart = false;

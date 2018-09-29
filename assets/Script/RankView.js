@@ -1,14 +1,48 @@
+const Global = require('../Global/Global');
+
 cc.Class({
   extends: cc.Component,
 
   properties: {
+    btnBack: cc.Node,
+    btnGroupRank: cc.Node,
+    btnHome: cc.Node,
+    btnHome2: cc.Node,
+    btnPlayAgain: cc.Node,
+    btnChallenge: cc.Node,
+    btnStart: cc.Node,
   },
 
   onLoad() {
-    cc.log('RankView loaded');
+    if (Global.rankViewStatus === 0) {
+      this.btnHome.removeFromParent();
+      this.btnHome2.removeFromParent();
+      this.btnPlayAgain.removeFromParent();
+      this.btnChallenge.removeFromParent();
+      this.btnStart.removeFromParent();
+    } else if (Global.rankViewStatus === 1) {
+      this.btnHome2.removeFromParent();
+      this.btnBack.removeFromParent();
+      this.btnGroupRank.removeFromParent();
+      this.btnStart.removeFromParent();
+    } else {
+      this.btnHome.removeFromParent();
+      this.btnBack.removeFromParent();
+      this.btnGroupRank.removeFromParent();
+      this.btnPlayAgain.removeFromParent();
+      this.btnChallenge.removeFromParent();
+    }
   },
 
   back() {
     cc.director.loadScene('game');
+  },
+
+  share() {
+    cc.log('onShare');
+    wx.shareAppMessage({
+      title: Global.shareTitle,
+      imageUrl: Global.shareImageUrl,
+    });
   }
 });

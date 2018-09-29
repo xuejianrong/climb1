@@ -1,3 +1,5 @@
+const Global = require('../Global/Global');
+
 cc.Class({
   extends: cc.Component,
 
@@ -5,7 +7,7 @@ cc.Class({
   },
 
   onLoad () {
-    cc.director.preloadScene('rank', null);
+    // cc.director.preloadScene('rank', null);
   },
 
   startGame() {
@@ -16,6 +18,7 @@ cc.Class({
   },
 
   redirectToRank() {
+    Global.rankViewStatus = 0;
     cc.director.loadScene('rank');
-  }
+  },
 });
