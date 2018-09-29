@@ -71,6 +71,7 @@ cc.Class({
         console.error('请使用 2.2.3 或以上的基础库以使用云能力');
       } else {
         wx.cloud.init();
+        Global.db = wx.cloud.database()
       }
     }
   },
@@ -215,18 +216,25 @@ cc.Class({
     this.node.on('touchstart', this.touchStartHandle, this);
     this.node.on('touchend', this.touchEndHandle, this);
 
+    // 获取openid
     if (CC_WECHATGAME) {
-      // 调用云函数
-      wx.cloud.callFunction({
-        name: 'login',
-        data: {},
-        success: res => {
-          console.log('[云函数] [login] user openid: ', res.result.openid);
-        },
-        fail: err => {
-          console.error('[云函数] [login] 调用失败', err);
-        }
-      });
+      if (!Global.openid) {
+        // 调用云函数
+        wx.cloud.callFunction({
+          name: 'login',
+          data: {},
+          success: res => {
+            console.log('[云函数] [login] user openid: ', res.result.openid);
+            Global.openid = res.result.openid;
+            this.getData();
+          },
+          fail: err => {
+            console.error('[云函数] [login] 调用失败', err);
+          }
+        });
+      } else {
+        this.getData();
+      }
     }
   },
   gameOver() {
@@ -286,5 +294,45 @@ cc.Class({
     const playerCom = this.player.getComponent('Player');
     playerCom.activeNode.runAction(cc.show());
     playerCom.overNode.runAction(cc.hide());
+  },
+
+  getData(openid = Global.openid) {
+    // 这里输出不能使用cc.log，具体不知道什么原因
+    // 根据openid查询数据库记录
+    Global.db.collection('challengeCounters').where({
+      _openid: openid,
+    }).get({
+      success: res => {
+        console.log('[数据库] [查询记录] 成功: ', res);
+        const data = res.data;
+        if (data.length === 0) {
+          // 不存在则插入数据
+          this.addData({
+            counters: Global.challengeCountersAll,
+            score: 0,
+          });
+          Global.challengeCounters = Global.challengeCountersAll;
+        } else {
+          Global.challengeCounters = data[0].counters;
+        }
+      },
+      fail: err => {
+        console.error('[数据库] [查询记录] 失败：', err);
+      }
+    });
+  },
+
+  addData(data) {
+    Global.db.collection('challengeCounters').add({
+      data: Object.assign({
+        date: new Date(),
+      }, data),
+      success: res => {
+        console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
+      },
+      fail: err => {
+        console.error('[数据库] [新增记录] 失败：', err)
+      }
+    })
   },
 });

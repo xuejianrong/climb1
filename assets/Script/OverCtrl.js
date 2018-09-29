@@ -13,7 +13,7 @@ cc.Class({
 
   setting() {
     this.score.string = `本次得分<br/>${this.gameView.score}`;
-    this.desc.string = `每天5次复活机会，今日剩余：2次`; // TODO 根据服务器返回的数据显示
+    this.desc.string = `每天5次复活机会，今日剩余：${Global.challengeCounters}次`;
   },
 
   skip() {

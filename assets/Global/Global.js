@@ -9,4 +9,12 @@ module.exports = {
   * */
   shareTitle: '分享标题',
   shareImageUrl: 'http://static.live.nagezan.net/live/19cc06e0-3a5f-48d5-93f9-d0414cd21f51.jpg',
+
+  /*
+  * 用户相关
+  * */
+  openid: '',
+  challengeCountersAll: 5,
+  challengeCounters: 0,
+  db: '',
 };
