@@ -25,10 +25,23 @@ cc.Class({
   },
 
   share() {
-    cc.log('onShare');
+    console.log('onShare');
     wx.shareAppMessage({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
     });
+
+    // 大于零而且没有复活过才能复活
+    if (Global.challengeCounters > 0 && !Global.hasReplay) {
+      Global.updateData({
+        counters: Global.challengeCounters - 1,
+      }, res => {
+        console.log('复活成功');
+        Global.hasReplay = true;
+        this.node.removeFromParent();
+        this.gameView.clearGame(true);
+        this.gameView.canTouchStart = true;
+      });
+    }
   }
 });

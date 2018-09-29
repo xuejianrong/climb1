@@ -38,6 +38,7 @@ cc.Class({
     isTouch: false,
     prevTouchX: 0,
     x: 0,
+    canTouchStart: false,
 
     /*
     * 分数相关
@@ -191,6 +192,11 @@ cc.Class({
   },
 
   touchStartHandle(e) {
+    // 用于复活之后的触摸开始游戏
+    if (this.canTouchStart) {
+      this.isStart = true;
+      this.canTouchStart = false;
+    }
     // 设置为触摸中
     this.isTouch = true;
     // 获取触摸初始点坐标
@@ -239,14 +245,20 @@ cc.Class({
   },
   gameOver() {
     this.isStart = false;
-    // 结束后的控制模块显示
-    const view = cc.instantiate(this.overViewPrefab);
-    const overCtrl = view.getComponent('OverCtrl');
-    overCtrl.gameView = this;
-    this.scheduleOnce(() => {
-      overCtrl.setting();
-      this.gameCanvas.addChild(view);
-    }, 1.5);
+
+    if (!Global.hasReplay) {
+      // 没有复活过，结束后的控制模块显示
+      const view = cc.instantiate(this.overViewPrefab);
+      const overCtrl = view.getComponent('OverCtrl');
+      overCtrl.gameView = this;
+      this.scheduleOnce(() => {
+        overCtrl.setting();
+        this.gameCanvas.addChild(view);
+      }, 1.5);
+    } else {
+      Global.rankViewStatus = 1;
+      cc.director.loadScene('rank');
+    }
   },
   getGold() {
     if (this.step === this.preStep + 1) {
@@ -276,16 +288,20 @@ cc.Class({
   },
 
   // 重置游戏场景
-  clearGame() {
+  clearGame(isReplay) {
+    // 复活不需要重置的部分
+    if (!isReplay) {
+      this.score = 0;
+      this.step = 0;
+      this.progress.height = 25;
+    }
+
     this.stairs.forEach(stair => stair.removeFromParent())
     this.stairs.length = 0;
     this.createStair();
     this.initPlayer();
-    this.progress.height = 25;
     this.goldContinuousCount = 0;
-    this.score = 0;
     this.addCount = 0;
-    this.step = 0;
     this.preStep = 0;
     this.scoreLabel.string = `<color=#19C1A7><b>${this.score}</b><color>`;
 
@@ -297,42 +313,9 @@ cc.Class({
   },
 
   getData(openid = Global.openid) {
-    // 这里输出不能使用cc.log，具体不知道什么原因
-    // 根据openid查询数据库记录
-    Global.db.collection('challengeCounters').where({
-      _openid: openid,
-    }).get({
-      success: res => {
-        console.log('[数据库] [查询记录] 成功: ', res);
-        const data = res.data;
-        if (data.length === 0) {
-          // 不存在则插入数据
-          this.addData({
-            counters: Global.challengeCountersAll,
-            score: 0,
-          });
-          Global.challengeCounters = Global.challengeCountersAll;
-        } else {
-          Global.challengeCounters = data[0].counters;
-        }
-      },
-      fail: err => {
-        console.error('[数据库] [查询记录] 失败：', err);
-      }
-    });
+    Global.queryData(openid);
   },
 
-  addData(data) {
-    Global.db.collection('challengeCounters').add({
-      data: Object.assign({
-        date: new Date(),
-      }, data),
-      success: res => {
-        console.log('[数据库] [新增记录] 成功，记录 _id: ', res._id)
-      },
-      fail: err => {
-        console.error('[数据库] [新增记录] 失败：', err)
-      }
-    })
-  },
+  // 上报成绩
+  updateData() {}
 });
