@@ -8,7 +8,7 @@
   "subMetas": {
     "gold": {
       "ver": "1.0.3",
-      "uuid": "1b7c02bd-b232-4c2f-bcf9-530d98f81503",
+      "uuid": "dd0abaf8-744d-45f2-9329-ef1ea2e5ccdb",
       "rawTextureUuid": "0363230c-7161-4d6c-8918-04a273063edf",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -17,10 +17,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 64,
-      "height": 64,
-      "rawWidth": 64,
-      "rawHeight": 64,
+      "width": 59,
+      "height": 65,
+      "rawWidth": 59,
+      "rawHeight": 65,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

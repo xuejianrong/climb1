@@ -1,4 +1,10 @@
 const Global = require('../Global/Global');
+let openDataContext = '';
+if (CC_WECHATGAME) {
+  openDataContext = wx.getOpenDataContext();
+  // openDataContext.enabled = false;
+  // openDataContext.update();
+}
 
 cc.Class({
   extends: cc.Component,
@@ -98,7 +104,6 @@ cc.Class({
               console.log('[云函数] [login] user openid: ', res.result.openid);
               Global.openid = res.result.openid;
               this.getData();
-              const openDataContext = wx.getOpenDataContext();
               openDataContext.postMessage({
                 type: 1,
                 openid: res.result.openid
@@ -146,7 +151,11 @@ cc.Class({
 
       // player触摸运动
       if (this.isTouch && this.isStart) {
-        this.player.x = this.x;
+        if (this.x > - 375 + 63 && this.x < 375 - 63) {
+          this.player.x = this.x;
+        } else {
+          this.x = this.player.x;
+        }
       }
     }
   },
@@ -248,10 +257,15 @@ cc.Class({
   touchMoveHandle(e) {
     // 获取移动点坐标
     const x = e.getLocation().x;
-    // 设置x坐标
-    this.x += x - this.prevTouchX;
-    // 更新前一个触摸点的x坐标
-    this.prevTouchX = x;
+    const diff = x - this.prevTouchX;
+    // 在屏幕内才执行下面操作
+    if ((this.x > -375 + 63 && this.x < 357 - 63) || (this.x <= -375 + 63 && diff > 0) || (this.x >= 357 - 63 && diff < 0)) {
+      // 设置x坐标
+      this.x += diff;
+      // 更新前一个触摸点的x坐标
+      this.prevTouchX = x;
+    }
+
   },
   touchEndHandle(e) {
     // 设置为触摸结束
@@ -260,6 +274,7 @@ cc.Class({
 
   startGame() {
     this.isStart = true;
+    Global.hasReplay = false;
     // 监听touch事件
     this.node.on('touchmove', this.touchMoveHandle, this);
     this.node.on('touchstart', this.touchStartHandle, this);
@@ -375,7 +390,6 @@ cc.Class({
     });
     // 上报到开放数据域
     if (CC_WECHATGAME) {
-      const openDataContext = wx.getOpenDataContext();
       openDataContext.postMessage({
         type: 0,
         data: {
