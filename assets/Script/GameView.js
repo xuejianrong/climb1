@@ -23,7 +23,10 @@ cc.Class({
     firstEndScaleY: .72,
     firstY: 200,
     firstEndY: 0, // firstY = speed * .6 + firstEndY, .6为跳跃一次所需的时间（初始）
-    speed: 143.75, // stair的运动速度 px/s ，作为游戏整体速度（难度的控制）
+    speed: 0, // stair的运动速度 px/s ，作为游戏整体速度（难度的控制）
+    initSpeed: 100, // 初始速度
+    addSpeed: 20,
+    maxSpeed: 200,
     scaleXChange: .09,
     scaleYChange: .09,
     initX: 0,
@@ -66,6 +69,7 @@ cc.Class({
     // 添加stair
     this.createStair();
     this.initPlayer();
+    this.speed = this.initSpeed;
 
     Global.gameView = this;
 
@@ -81,6 +85,32 @@ cc.Class({
       } else {
         wx.cloud.init();
         Global.db = wx.cloud.database()
+      }
+
+      // 获取openid
+      if (CC_WECHATGAME) {
+        if (!Global.openid) {
+          // 调用云函数
+          wx.cloud.callFunction({
+            name: 'login',
+            data: {},
+            success: res => {
+              console.log('[云函数] [login] user openid: ', res.result.openid);
+              Global.openid = res.result.openid;
+              this.getData();
+              const openDataContext = wx.getOpenDataContext();
+              openDataContext.postMessage({
+                type: 1,
+                openid: res.result.openid
+              });
+            },
+            fail: err => {
+              console.error('[云函数] [login] 调用失败', err);
+            }
+          });
+        } else {
+          this.getData();
+        }
       }
     }
   },
@@ -234,27 +264,6 @@ cc.Class({
     this.node.on('touchmove', this.touchMoveHandle, this);
     this.node.on('touchstart', this.touchStartHandle, this);
     this.node.on('touchend', this.touchEndHandle, this);
-
-    // 获取openid
-    if (CC_WECHATGAME) {
-      if (!Global.openid) {
-        // 调用云函数
-        wx.cloud.callFunction({
-          name: 'login',
-          data: {},
-          success: res => {
-            console.log('[云函数] [login] user openid: ', res.result.openid);
-            Global.openid = res.result.openid;
-            this.getData();
-          },
-          fail: err => {
-            console.error('[云函数] [login] 调用失败', err);
-          }
-        });
-      } else {
-        this.getData();
-      }
-    }
   },
   gameOver(complete) {
     this.isStart = false;
@@ -269,6 +278,7 @@ cc.Class({
         this.gameCanvas.addChild(view);
       }, 1.5);
     } else {
+      this.updateData();
       Global.rankViewStatus = 1;
       cc.director.loadScene('rank');
     }
@@ -298,6 +308,13 @@ cc.Class({
     const minHeight = 25;
     const height = (this.step / 100) * maxHeight;
     this.progress.height = height > 25 ? height : 25;
+
+    // 每跳10个加20的速度
+    if (this.speed < this.maxSpeed) {
+      this.speed = this.initSpeed + parseInt(this.step / 10, 10) * 20;
+    } else {
+      this.speed = this.maxSpeed;
+    }
   },
 
   // 重置游戏场景
@@ -326,11 +343,48 @@ cc.Class({
   },
 
   getData(openid = Global.openid) {
-    Global.queryData(openid);
+    Global.queryData(openid, res => {
+      console.log('[数据库] [查询记录] 成功: ', res);
+      const data = res.data;
+      if (data.length === 0) {
+        // 不存在则插入数据
+        Global.addData({
+          counters: Global.challengeCountersAll,
+          score: 0,
+        });
+        Global.challengeCounters = Global.challengeCountersAll;
+      } else {
+        Global.challengeCounters = data[0].counters;
+        Global.counterid = data[0]._id;
+      }
+    });
   },
 
   // 上报成绩
-  updateData() {},
+  updateData() {
+    console.log('上报成绩');
+    // 上报到云开发服务器，暂时没用
+    Global.queryData(Global.openid, res => {
+      console.log('上报前查询结果', res);
+      const data = res.data[0];
+      if (data.score < this.score) {
+        Global.updateData({
+          score: this.score,
+        });
+      }
+    });
+    // 上报到开放数据域
+    if (CC_WECHATGAME) {
+      const openDataContext = wx.getOpenDataContext();
+      openDataContext.postMessage({
+        type: 0,
+        data: {
+          score: this.score,
+          update_time: (new Date()).getTime()
+        }
+      });
+    }
+  },
 
   checkQuery() {
     if (CC_WECHATGAME) {

@@ -20,6 +20,7 @@ cc.Class({
     // this.node.runAction(cc.removeSelf());
     // this.gameView.createCtrlView();
     // this.gameView.clearGame();
+    this.gameView.updateData();
     Global.rankViewStatus = 1;
     cc.director.loadScene('rank');
   },
@@ -30,6 +31,9 @@ cc.Class({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
       query: 'view=rank&status=2',
+      success: (res) => {
+        console.log('分享成功', res);
+      }
     });
 
     // 大于零而且没有复活过才能复活

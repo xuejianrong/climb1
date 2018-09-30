@@ -18,26 +18,12 @@ module.exports = {
   challengeCounters: 0,
   db: '',
   counterid: '',
-  queryData(openid) {
+  queryData(openid, cb) {
     // 这里输出不能使用cc.log，具体不知道什么原因
     this.db.collection('challengeCounters').where({
       _openid: openid,
     }).get({
-      success: res => {
-        console.log('[数据库] [查询记录] 成功: ', res);
-        const data = res.data;
-        if (data.length === 0) {
-          // 不存在则插入数据
-          this.addData({
-            counters: this.challengeCountersAll,
-            score: 0,
-          });
-          this.challengeCounters = this.challengeCountersAll;
-        } else {
-          this.challengeCounters = data[0].counters;
-          this.counterid = data[0]._id;
-        }
-      },
+      success: cb,
       fail: err => {
         console.error('[数据库] [查询记录] 失败：', err);
       }

@@ -48,6 +48,9 @@ cc.Class({
       title: Global.shareTitle,
       imageUrl: Global.shareImageUrl,
       query: 'view=rank&status=2',
+      success: (res) => {
+        console.log('分享成功', res);
+      }
     });
   },
 
