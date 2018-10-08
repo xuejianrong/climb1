@@ -80,6 +80,9 @@ cc.Class({
     Global.gameView = this;
 
     if (CC_WECHATGAME) {
+      wx.updateShareMenu({
+        withShareTicket: true
+      });
       wx.onShareAppMessage(function () {
         return {
           title: Global.shareTitle,
@@ -412,7 +415,16 @@ cc.Class({
 
   checkQuery() {
     if (CC_WECHATGAME) {
-      const query = wx.getLaunchOptionsSync().query;
+      console.log('getLaunchOptionsSync:', wx.getLaunchOptionsSync());
+      const options = wx.getLaunchOptionsSync();
+      const shareTicket = options.shareTicket;
+      if (shareTicket) {
+        openDataContext.postMessage({
+          type: 2,
+          shareTicket,
+        });
+      }
+      const query = options.query;
       if (query.view === 'rank') {
         Global.rankViewStatus = parseInt(query.status, 10);
         cc.director.loadScene('rank');
