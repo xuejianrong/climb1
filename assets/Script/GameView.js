@@ -344,7 +344,7 @@ cc.Class({
       this.progress.height = 25;
     }
 
-    this.stairs.forEach(stair => stair.removeFromParent())
+    this.stairs.forEach(stair => stair.removeFromParent());
     this.stairs.length = 0;
     this.createStair();
     this.initPlayer();
