@@ -369,8 +369,18 @@ cc.Class({
         });
         Global.challengeCounters = Global.challengeCountersAll;
       } else {
-        Global.challengeCounters = data[0].counters;
-        Global.counterid = data[0]._id;
+        // 判断上一个数据的时间是否是今天
+        const isToday = Global.dateIsToday(data[0].date);
+        if (isToday) {
+          Global.challengeCounters = data[0].counters;
+          Global.counterid = data[0]._id;
+        } else {
+          Global.updateData({
+            counters: Global.challengeCountersAll,
+          }, null);
+          Global.counterid = data[0]._id;
+          Global.challengeCounters = Global.challengeCountersAll;
+        }
       }
     });
   },

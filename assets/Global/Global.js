@@ -60,4 +60,12 @@ module.exports = {
   * 其他
   * */
   joinFirst: true,
+  dateIsToday(date) {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = now.getMonth() + 1;
+    const d = now.getDate();
+    const d2 = new Date(`${y}-${m}-${d} 00:00:00`);
+    return date.getTime() >= d2.getTime();
+  },
 };
