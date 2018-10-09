@@ -8,7 +8,7 @@ module.exports = {
   * 分享相关
   * */
   shareTitle: '分享标题',
-  shareImageUrl: 'http://static.live.nagezan.net/live/19cc06e0-3a5f-48d5-93f9-d0414cd21f51.jpg',
+  shareImageUrl: 'http://static.live.nagezan.net/live/42057568-13a6-403c-84ec-d899dddbc6ab.jpg',
 
   /*
   * 用户相关

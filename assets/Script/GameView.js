@@ -17,6 +17,7 @@ cc.Class({
     stair: cc.Prefab,
     stairs: [cc.Node],
     player: cc.Node,
+    shadow: cc.Node,
     progressBox: cc.Node,
     progress: cc.Node,
     overViewPrefab: cc.Prefab,
@@ -152,10 +153,14 @@ cc.Class({
       const vt = v - (a * this.moveTime); // 瞬时速度（向量）
       this.player.y += vt * dt;
 
+      // 影子的变化
+      this.shadow.scale = (-0.9 * (this.player.y - this.initY) / (this.jumpHeight - this.initY)) + 1;
+
       // player触摸运动
       if (this.isTouch && this.isStart) {
         if (this.x > - 375 + 63 && this.x < 375 - 63) {
           this.player.x = this.x;
+          this.shadow.x = this.x;
         } else {
           this.x = this.player.x;
         }
@@ -242,6 +247,9 @@ cc.Class({
     this.player.x = this.initX;
     this.player.y = this.initY;
     this.player.setSiblingIndex(10);
+    this.shadow.x = this.initX;
+    this.shadow.y = this.initY;
+    this.shadow.setSiblingIndex(9);
     this.progressBox.setSiblingIndex(10);
     this.x = this.initX;
   },
