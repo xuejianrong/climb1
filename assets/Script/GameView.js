@@ -286,7 +286,7 @@ cc.Class({
   gameOver(complete) {
     this.isStart = false;
 
-    if (!Global.hasReplay && !complete) {
+    if (!Global.hasReplay && !complete && Global.challengeCounters > 0) {
       // 没有复活过，结束后的控制模块显示
       const view = cc.instantiate(this.overViewPrefab);
       const overCtrl = view.getComponent('OverCtrl');
