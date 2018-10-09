@@ -1658,7 +1658,7 @@
     "firstEndY": 0,
     "speed": 0,
     "initSpeed": 120,
-    "addSpeed": 18,
+    "addSpeed": 10,
     "maxSpeed": 200,
     "scaleXChange": 0.09,
     "scaleYChange": 0.09,

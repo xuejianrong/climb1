@@ -178,6 +178,11 @@ cc.Class({
       const last = this.stairs.pop();
       // 重排stair
       const component = last.getComponent('Stair');
+      if (this.step > 50 && this.step <=80) {
+        component.barrierNum = 4;
+      } else if (this.step > 80) {
+        component.barrierNum = 5;
+      }
       component.init();
       this.stairs.unshift(last);
       // 重置y坐标和缩放比例
@@ -306,7 +311,9 @@ cc.Class({
     } else {
       this.updateData();
       Global.rankViewStatus = 1;
-      cc.director.loadScene('rank');
+      this.scheduleOnce(() => {
+        cc.director.loadScene('rank');
+      }, 1.5);
     }
   },
   getGold() {
