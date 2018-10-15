@@ -32,7 +32,10 @@ cc.Class({
         gameView.getGold();
 
         // gold的处理
-        collider.node.runAction(cc.removeSelf());
+        // collider.node.runAction(cc.removeSelf());
+        const gold = collider.node._parent;
+        const goldCom = gold.getComponent('Gold');
+        goldCom.getGoldHandle();
       }
     }
   },

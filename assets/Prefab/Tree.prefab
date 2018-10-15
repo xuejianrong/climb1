@@ -100,7 +100,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "b1JX+2XapH+qUU07L727/4"
+    "_id": "1d09YgKQdJII8uUq14LC19"
   },
   {
     "__type__": "cc.BoxCollider",
@@ -114,14 +114,14 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 10
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 55,
-      "height": 80
+      "height": 60
     },
-    "_id": "8bdF1jBuREJLjZ5lO/v+Kt"
+    "_id": "3bY1PT7gxHTo8VYhee1+LV"
   },
   {
     "__type__": "cc.PrefabInfo",

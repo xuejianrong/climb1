@@ -154,7 +154,7 @@ cc.Class({
       this.player.y += vt * dt;
 
       // 影子的变化
-      this.shadow.scale = (-0.9 * (this.player.y - this.initY) / (this.jumpHeight - this.initY)) + 1;
+      this.shadow.scale = (-0.8 * (this.player.y - this.initY) / (this.jumpHeight - this.initY)) + .8;
 
       // player触摸运动
       if (this.isTouch && this.isStart) {
@@ -317,20 +317,26 @@ cc.Class({
     }
   },
   getGold() {
-    if (this.step === this.preStep + 1) {
-      // 连续  则连续吃金币数+1
-      this.goldContinuousCount += 1;
-    } else {
-      // 不连续  则重置连续吃金币数
-      this.goldContinuousCount = 1;
-    }
-    this.preStep = this.step;
-
-    if (this.goldContinuousCount > 4) {
-      this.addCount = 50;
-    } else {
-      this.addCount = 20 + (this.goldContinuousCount - 1) * 10;
-    }
+    // 旧逻辑 start
+    // if (this.step === this.preStep + 1) {
+    //   // 连续  则连续吃金币数+1
+    //   this.goldContinuousCount += 1;
+    // } else {
+    //   // 不连续  则重置连续吃金币数
+    //   this.goldContinuousCount = 1;
+    // }
+    // this.preStep = this.step;
+    //
+    // if (this.goldContinuousCount > 4) {
+    //   this.addCount = 50;
+    // } else {
+    //   this.addCount = 20 + (this.goldContinuousCount - 1) * 10;
+    // }
+    // this.score += this.addCount;
+    // this.scoreLabel.string = `<color=#19C1A7><b>${this.score}</b><color>`;
+    // 旧逻辑 end
+    // 新逻辑start 2018/10/15
+    this.addCount = 5 * this.step;
     this.score += this.addCount;
     this.scoreLabel.string = `<color=#19C1A7><b>${this.score}</b><color>`;
   },

@@ -100,7 +100,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "cbbP81UD1JRqQlM6kwX2mu"
+    "_id": "a88W1ipG1OLYlTJCSCi8+y"
   },
   {
     "__type__": "b408awkSpRBPri4LoPCjvhR",
@@ -122,8 +122,13 @@
       "__uuid__": "7226c6a9-adcb-44f8-8835-dfe4b1872d5c"
     },
     "gold": null,
+    "addScorePrefab": {
+      "__uuid__": "81e23107-2501-4bad-8a08-cc38a67ff589"
+    },
+    "addScore": null,
     "goldPosition": -2,
-    "_id": "f5eFLDdGdMApAuW1MeDmcs"
+    "distance": 75,
+    "_id": "849Npq0nJD35lflGP54+Xi"
   },
   {
     "__type__": "cc.PrefabInfo",

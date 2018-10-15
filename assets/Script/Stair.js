@@ -72,12 +72,14 @@ cc.Class({
     // 不存在才添加，为了减少节点的添加过程
     if (!this.gold) {
       this.gold = cc.instantiate(this.goldPrefab);
+      this.gold.getComponent('Gold').gameView = this.gameView;
     }
     // 没有父节点（没有add或者remove掉）的才添加
     if (!this.gold._parent) {
       this.node.addChild(this.gold);
     }
     this.gold.setPosition(cc.v2((this.goldPosition * 70) - 350 + 35, this.distance));
+    this.gold.getComponent('Gold').init();
   },
 
   // update (dt) {},
