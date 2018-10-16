@@ -33,20 +33,26 @@ cc.Class({
       query: 'view=rank&status=2',
       success: (res) => {
         console.log('分享成功', res);
+        // 大于零而且没有复活过才能复活
+        if (Global.challengeCounters > 0 && !Global.hasReplay) {
+          Global.updateData({
+            counters: Global.challengeCounters - 1,
+          }, res => {
+            console.log('复活成功');
+            Global.hasReplay = true;
+            this.node.removeFromParent();
+            this.gameView.clearGame(true);
+            this.gameView.canTouchStart = true;
+          });
+        }
+      },
+      fail: (res) => {
+        console.log('分享失败', res);
+        wx.showToast({
+          title: '取消分享',
+          icon: 'none'
+        })
       }
     });
-
-    // 大于零而且没有复活过才能复活
-    if (Global.challengeCounters > 0 && !Global.hasReplay) {
-      Global.updateData({
-        counters: Global.challengeCounters - 1,
-      }, res => {
-        console.log('复活成功');
-        Global.hasReplay = true;
-        this.node.removeFromParent();
-        this.gameView.clearGame(true);
-        this.gameView.canTouchStart = true;
-      });
-    }
   }
 });

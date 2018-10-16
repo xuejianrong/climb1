@@ -50,6 +50,9 @@ cc.Class({
       query: 'view=rank&status=2',
       success: (res) => {
         console.log('分享成功', res);
+      },
+      fail: (res) => {
+        console.log('分享失败', res);
       }
     });
   },
